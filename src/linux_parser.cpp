@@ -119,14 +119,34 @@ long LinuxParser::Jiffies() { return LinuxParser::UpTime() * sysconf(_SC_CLK_TCK
 long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
 
 // TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
+long LinuxParser::ActiveJiffies() { 
+  long activeJiffies = 0;
+  vector<string> cpuValues = CpuUtilization();
+  if (cpuValues.size() == 0)
+    return activeJiffies;
+  activeJiffies += stol(cpuValues[0]);
+  activeJiffies += stol(cpuValues[1]);
+  activeJiffies += stol(cpuValues[2]);
+  activeJiffies += stol(cpuValues[5]);
+  activeJiffies += stol(cpuValues[6]);
+  activeJiffies += stol(cpuValues[7]);
+  return activeJiffies;
+ }
 
 // TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+long LinuxParser::IdleJiffies() { 
+  long idleJiffies = 0;
+  vector<string> cpuValues = CpuUtilization();
+  if (cpuValues.size() == 0)
+    return idleJiffies;
+  idleJiffies += stol(cpuValues[3]);
+  idleJiffies += stol(cpuValues[4]);
+  return idleJiffies;
+}
 
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization() { 
-  vector<string> cpu;
+  vector<string> cpuValues;
   string token, line;
   std::ifstream stream(kProcDirectory + kStatFilename);
   if (stream.is_open()) {
@@ -134,13 +154,13 @@ vector<string> LinuxParser::CpuUtilization() {
       std::istringstream stringStream(line);
       if (stringStream >> token) {
         if (token.compare("cpu") == 0) {
-          while (stringStream >> token) cpu.push_back(token);
-          return cpu;
+          while (stringStream >> token) cpuValues.push_back(token);
+          return cpuValues;
         }
       }
     }
   }
-  return cpu;
+  return cpuValues;
  }
 
 // TODO: Read and return the total number of processes
