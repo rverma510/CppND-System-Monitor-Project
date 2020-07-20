@@ -191,7 +191,8 @@ string LinuxParser::Ram(int pid) {
   if (stream.is_open()) {
     while (stream >> token) {
       if (token.compare("VmSize:") == 0) {
-        if (stream >> token) return token;
+        if (stream >> token) 
+          return std::to_string(stol(token) / 1024);
       }
     }
   }
@@ -227,7 +228,7 @@ string LinuxParser::User(int pid) {
     std::replace(line.begin(), line.end(), ':', ' ');
     std::istringstream stringStream(line);
     if (stringStream >> username >> password >> userId) {
-      if (userId.compare(Uid) == 0) return username;
+      if (userId == Uid) return username;
     }
   }
   return "";
@@ -241,8 +242,9 @@ long LinuxParser::UpTime(int pid) {
   if (stream.is_open()) {
     int i = 0;
     while(stream >> token) {
-      if (i == 13) {
+      if (i == 21) {
         long time = stol(token);
+        time = LinuxParser::Jiffies() - time;
         time /= sysconf(_SC_CLK_TCK);
         return time;
       }
