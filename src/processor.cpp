@@ -4,7 +4,7 @@
 using std::stof;
 using std::string;
 using std::vector;
-// TODO: Return the aggregate CPU utilization
+
 float Processor::Utilization() { 
     vector<string> values = LinuxParser::CpuUtilization();
     float prevIdle = idle + iowait;
