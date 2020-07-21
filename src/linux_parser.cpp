@@ -141,12 +141,12 @@ long LinuxParser::ActiveJiffies() {
   vector<string> cpuValues = CpuUtilization();
   if (cpuValues.size() == 0)
     return activeJiffies;
-  activeJiffies += stol(cpuValues[0]);
-  activeJiffies += stol(cpuValues[1]);
-  activeJiffies += stol(cpuValues[2]);
-  activeJiffies += stol(cpuValues[5]);
-  activeJiffies += stol(cpuValues[6]);
-  activeJiffies += stol(cpuValues[7]);
+  activeJiffies += stol(cpuValues[CPUStates::kUser_]);
+  activeJiffies += stol(cpuValues[CPUStates::kNice_]);
+  activeJiffies += stol(cpuValues[CPUStates::kSystem_]);
+  activeJiffies += stol(cpuValues[CPUStates::kIRQ_]);
+  activeJiffies += stol(cpuValues[CPUStates::kSoftIRQ_]);
+  activeJiffies += stol(cpuValues[CPUStates::kSteal_]);
   return activeJiffies;
  }
 
@@ -156,8 +156,8 @@ long LinuxParser::IdleJiffies() {
   vector<string> cpuValues = CpuUtilization();
   if (cpuValues.size() == 0)
     return idleJiffies;
-  idleJiffies += stol(cpuValues[3]);
-  idleJiffies += stol(cpuValues[4]);
+  idleJiffies += stol(cpuValues[CPUStates::kIdle_]);
+  idleJiffies += stol(cpuValues[CPUStates::kIOwait_]);
   return idleJiffies;
 }
 
