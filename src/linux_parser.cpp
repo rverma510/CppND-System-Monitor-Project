@@ -261,11 +261,12 @@ string LinuxParser::User(int pid) {
   string line;
   std::ifstream stream(kPasswordPath);
   if (stream.is_open()) {
-    std::getline(stream, line);
-    std::replace(line.begin(), line.end(), ':', ' ');
-    std::istringstream stringStream(line);
-    if (stringStream >> username >> password >> userId) {
-      if (userId == Uid) return username;
+    while (std::getline(stream, line)) {
+      std::replace(line.begin(), line.end(), ':', ' ');
+      std::istringstream stringStream(line);
+      if (stringStream >> username >> password >> userId) {
+        if (userId == Uid) return username;
+      }
     }
   }
   return "";
@@ -281,7 +282,7 @@ long LinuxParser::UpTime(int pid) {
     while(stream >> token) {
       if (i == 21) {
         long time = stol(token);
-        // time = LinuxParser::Jiffies() - time;
+        time = LinuxParser::Jiffies() - time;
         time /= sysconf(_SC_CLK_TCK);
         return time;
       }

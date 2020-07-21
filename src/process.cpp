@@ -18,8 +18,8 @@ int Process::Pid() { return pid_; }
 
 // TODO: Return this process's CPU utilization
 float Process::CpuUtilization() const{ 
-    long activeJiffies = LinuxParser::ActiveJiffies(pid_);
-    long processUptime = LinuxParser::Jiffies() - LinuxParser::UpTime(pid_);
+    long activeJiffies = LinuxParser::ActiveJiffies(pid_) / sysconf(_SC_CLK_TCK);
+    long processUptime = LinuxParser::UpTime(pid_);
     if(processUptime <= 0) return 0.0;
     return (float) (1.0*activeJiffies / processUptime);   
  }
