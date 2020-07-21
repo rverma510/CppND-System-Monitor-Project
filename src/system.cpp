@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <functional>
 
 #include "process.h"
 #include "processor.h"
@@ -14,6 +15,7 @@ using std::set;
 using std::size_t;
 using std::string;
 using std::vector;
+using std::greater;
 
 // TODO: Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
@@ -25,6 +27,7 @@ vector<Process>& System::Processes() {
     for (auto i: processIds) {
         processes_.push_back(Process(i));
     }
+    sort(processes_.begin(), processes_.end(), greater<Process>());
     return processes_; }
 
 // TODO: Return the system's kernel identifier (string)

@@ -281,7 +281,7 @@ long LinuxParser::UpTime(int pid) {
     while(stream >> token) {
       if (i == 21) {
         long time = stol(token);
-        time = LinuxParser::Jiffies() - time;
+        // time = LinuxParser::Jiffies() - time;
         time /= sysconf(_SC_CLK_TCK);
         return time;
       }
