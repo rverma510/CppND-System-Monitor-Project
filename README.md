@@ -1,6 +1,6 @@
 # CppND-System-Monitor
 
-System Monitor Project for linux operating system. 
+This C++ project is the second project of Udacity C++ Nanodegree. The source code has been heavily adapted from the provided starter code located at (Udacity's repo)[https://github.com/udacity/CppND-System-Monitor-Project-Updated]. This project is implemented for Linux Operating System and can be used to list various information regarding the OS like total CPU and memory utilization, listing total and running processes, uptime and details about different processes running sorted based on cpu utilization in decreasing order.
 
 ![System Monitor](images/monitor.png)
 
